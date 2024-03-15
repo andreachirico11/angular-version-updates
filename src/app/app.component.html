@@ -1,0 +1,19 @@
+<table>
+  <thead>
+    <tr>
+      <th>VALUES:</th>
+      <th *ngFor="let testValue of testValues">{{(testValue === '' ? 'Empty
+        String' : testValue) + ''}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let testname of tests">
+      <th>{{testname}}</th>
+      <td *ngFor="let testValue of testValues">
+        {{applyTestValues(testname, testValue)}}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
