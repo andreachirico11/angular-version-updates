@@ -1,0 +1,11 @@
+<app-loadingbar></app-loadingbar>
+<app-header></app-header>
+<app-profile [isAuthenticated]="isAuthenticated"
+  [isAuthenticatedOld]="isAuthenticatedOld">
+</app-profile>
+<app-auth-button [isAuthenticated]="isAuthenticated"
+  [isAuthenticatedOld]="isAuthenticatedOld"
+  (isAuthenticating)="onisAuthenticating($event)"
+  >
+</app-auth-button>
+<router-outlet></router-outlet>
