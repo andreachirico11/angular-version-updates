@@ -1,0 +1,4 @@
+<div style="display: grid; grid-auto-flow: column;">
+  <img *ngFor="let photo of (photos | async)" [ngSrc]="photo.url" [priority]="photo.hasPriority" width="200"
+    height="200">
+</div>
