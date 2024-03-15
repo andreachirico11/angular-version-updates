@@ -1,0 +1,1 @@
+import{A as p,c as r,k as e,l as m,w as l}from"./chunk-HWNKR6US.js";var t,o=(t=class{constructor(){}ngOnInit(){}},t.ctorParameters=()=>[],t);o=r([e({selector:"old",template:"<h1>Old</h1>"})],o);var d=class{};d=r([m({declarations:[o],imports:[l,p.forChild([{path:"",component:o}])]})],d);export{d as OldStyleModule};
