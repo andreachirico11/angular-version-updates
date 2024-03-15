@@ -1,0 +1,5 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <input type="number" formControlName="contro">
+</form>
+<h3>Status: {{controlStatus$ | async}}</h3>
+<button (click)="toggleMax()">Toggle max validator</button>
