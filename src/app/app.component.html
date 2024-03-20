@@ -1,0 +1,33 @@
+<!-- no need to import directives -->
+@if (isLoggedIn) {
+  The user is logged in
+} @else {
+  The user is not logged in
+}
+
+
+@switch (userType) {
+  @case ('admin') { <admin-dashboard/> }
+  @case ('moderator') { <moderator-dashboard/> }
+  @default { <user-dashboard/> }
+}
+
+
+<ul>
+
+  @for(post of (posts | async); track post.postId) {
+  <li>
+    {{post.name}}
+  </li>
+  } @empty {
+    <p>No Posts</p>
+  }
+</ul>
+
+@defer (on viewport) {
+  <father/>
+} @placeholder {
+<p>
+  Loading father component
+</p>
+}
