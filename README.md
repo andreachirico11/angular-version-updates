@@ -21,6 +21,7 @@ This repository is organized into separate branches, where each branch represent
 | `NONE` | no significant improvement in v10, only hot-module-replacement for developers
 | `ng12` | 12.2.0
 | `ng13` | 13.3.0
+| `ng14` | 14.2.0
 
 ## 🚀 Getting Started
 
