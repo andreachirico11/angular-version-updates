@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-version-updates"
+    }
+  },
+  "defaultProject": "angular-version-updates",
+  "cli": {
+    "analytics": false
+  }
 }
