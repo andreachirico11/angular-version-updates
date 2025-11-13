@@ -17,6 +17,8 @@ This repository is organized into separate branches, where each branch represent
 |--------|----------------
 | `ng8` | 8.2.14 
 | `ng9` | 9.1.13
+| `NONE` | no significant improvement in v9
+| `NONE` | no significant improvement in v10, only hot-module-replacement for developers
 
 ## 🚀 Getting Started
 
