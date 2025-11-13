@@ -16,6 +16,7 @@ This repository is organized into separate branches, where each branch represent
 | Branch | Angular Version 
 |--------|----------------
 | `ng8` | 8.2.14 
+| `ng9` | 9.1.13
 
 ## 🚀 Getting Started
 
@@ -106,17 +107,15 @@ To add a new Angular version to this repository, follow these steps:
 4. **Create new Angular project**
 
    ```bash
-   npx -p @angular/cli@<version> ng new angular-version-updates --routing --style=scss
+   npx -p @angular/cli@<version> ng new angular-version-updates --routing --style=scss --skip-install
    ```
 
 
 5. **Move project files to root level**
 
    ```bash
-   # Remove node_modules from generated project
-   rm -rf angular-version-updates/node_modules
 
-   # Move all files (including hidden ones) to parent directory
+   # Move all files to parent directory
    mv angular-version-updates/* .
 
    # Remove empty directory
