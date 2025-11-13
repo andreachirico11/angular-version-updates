@@ -15,7 +15,7 @@ This repository is organized into separate branches, where each branch represent
 
 | Branch | Angular Version 
 |--------|----------------
-| `TODO TODO` | x.x 
+| `ng8` | 8.2.14 
 
 ## 🚀 Getting Started
 
