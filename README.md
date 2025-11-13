@@ -19,6 +19,7 @@ This repository is organized into separate branches, where each branch represent
 | `ng9` | 9.1.13
 | `NONE` | no significant improvement in v9
 | `NONE` | no significant improvement in v10, only hot-module-replacement for developers
+| `ng12` | 12.2.0
 
 ## 🚀 Getting Started
 
