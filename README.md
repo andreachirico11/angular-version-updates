@@ -1,27 +1,82 @@
-# AngularVersionUpdates
+# Angular 8
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.29.
+## 🚀 Dynamic Route Imports (Lazy Loading)
 
-## Development server
+### What Changed
+From version 8, Angular has modified the syntax for lazy loading modules in routes.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+**Previous syntax (deprecated):**
+```typescript
+{
+  path: 'admin',
+  loadChildren: './admin/admin.module#AdminModule'
+}
+```
 
-## Code scaffolding
+**New syntax (Angular 8+):**
+```typescript
+{
+  path: 'admin',
+  loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+}
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Benefits
+- **Greater flexibility**: the callback allows importing not only modules, but also standalone components
+- **Type safety**: import errors detectable at compile time
+- **Compatibility with modern standards**: uses JavaScript dynamic imports (ES2020)
 
-## Build
+### Demo in the Application
+In the example app, by pressing the "Old" and "New" buttons, you can verify from the Developer Tools (Network tab) that both syntaxes load modules lazily with the same result.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+---
 
-## Running unit tests
+## 🎯 Static Query Resolution (@ViewChild / @ContentChild)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### New Property: `static`
+Angular 8 introduces the `static` property for `@ViewChild` and `@ContentChild` queries, which controls **when** the query is resolved.
 
-## Running end-to-end tests
+### Syntax
+```typescript
+@ViewChild('myElement', { static: true }) myElement: ElementRef;  // Resolves before ngOnInit
+@ViewChild('myElement', { static: false }) myElement: ElementRef; // Resolves in ngAfterViewInit
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### When to Use `static: true`
+- When the element is **always present** in the template (not inside `*ngIf` or `*ngFor`)
+- When you need to access the element **inside `ngOnInit`**
 
-## Further help
+### When to Use `static: false` (default)
+- When the element might **not be present** initially
+- When accessing the element happens in `ngAfterViewInit` or later
+- **Default behavior and recommended best practice**
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Demo in the Application
+Opening the console on page refresh, you can observe two components using different queries:
+- **With `static: true`**: the component is already available in `ngOnInit`
+- **With `static: false`**: the component is only available in `ngAfterViewInit`
+
+---
+
+## ⚡ Ivy Renderer & AOT Compilation
+
+### Ivy: The New Rendering Engine
+Angular 8 introduces **Ivy** as the next-generation rendering engine (opt-in in v8, default from v9).
+
+### AOT vs JIT Compilation
+
+| **AOT (Ahead-of-Time)** | **JIT (Just-in-Time)** |
+|-------------------------|------------------------|
+| ✅ Compilation **before** download | Compilation **in the browser** |
+| ✅ Smaller bundles | Larger bundles |
+| ✅ Better performance | Slower load times |
+| ✅ Error detection at build time | Errors detected at runtime |
+| 🎯 **Default in production** | Used in development mode |
+
+### Ivy Benefits
+- **Bundle size reduced** by up to 40%
+- **Faster compilation**
+- **Better tree-shaking**
+- **Simplified debugging**
+- **Backward compatibility** guaranteed
+
