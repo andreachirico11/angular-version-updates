@@ -22,6 +22,7 @@ This repository is organized into separate branches, where each branch represent
 | `ng12` | 12.2.0
 | `ng13` | 13.3.0
 | `ng14` | 14.2.0
+| `ng15` | 15.2.0
 
 ## 🚀 Getting Started
 
