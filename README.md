@@ -1,27 +1,106 @@
-# AngularVersionUpdates
+# Angular Version 16
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+## 1. Signals (stable since v17)
 
-## Development server
+**Signals** represent a new reactivity primitive in Angular that offers a modern alternative to RxJS Observables for state management.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Practical Example: Global State Management
 
-## Code scaffolding
+The project includes two services that demonstrate the evolution from the old to the new API:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **OldGlobalStateService**: uses `BehaviorSubject` (traditional approach)
+- **GlobalStateService**: uses `Signal` (new approach)
 
-## Build
+Both manage the application state by simulating login and logout operations.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Main Methods for Reactivity
 
-## Running unit tests
+#### `effect()`
+Automatically executes code when a signal value changes.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+**Example in LoadingBarComponent:**
+```typescript
+effect(() => {
+  this.createLoadingBar(this.globalState.isLoading());
+});
+```
+Every time the `isLoading()` signal emits a new value, the `effect` method is automatically re-triggered.
 
-## Running end-to-end tests
+#### `computed()`
+Creates a new derived signal based on other signals.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+**Example in GlobalStateService:**
+```typescript
+isAuth() {
+  return computed(() => this.appState().isAuthenticated);
+}
+```
+The `computed` signal automatically updates when the `appState` signal changes, dynamically calculating the `isAuthenticated` value.
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## 2. RxJS Interoperability
+
+Angular 16 introduces the ability to easily convert signals to observables and vice versa, enabling gradual migration of existing code.
+
+### Converting Observable to Signal
+
+Using the `toSignal()` function:
+
+```typescript
+this.list = toSignal(
+  this.ofWhat === 'users' ? this.data.getUsers() : this.data.getAlbums(),
+  { injector: this.inj }
+);
+```
+
+This allows you to:
+- Maintain compatibility with existing RxJS-based APIs
+- Benefit from fine-grained reactivity of signals
+- Gradually migrate code towards signals
+
+---
+
+## 3. Required Inputs
+
+`@Input()` decorators now support the `required` parameter to ensure mandatory values are provided to components.
+
+### Syntax
+
+```typescript
+@Input({ required: true }) ofWhat: 'users' | 'albums' = 'users';
+```
+
+### Benefits
+- **Compile-time type safety**: compilation error if the input is not provided
+- **Implicit documentation**: clear which inputs are mandatory
+- **Less defensive code**: no need to check if the input is undefined
+
+---
+
+## 4. Router Data as Component Inputs
+
+Angular 16 simplifies access to router parameters by allowing them to be automatically mapped to component inputs.
+
+### How It Works
+
+If an `@Input()` has the same name as a URL parameter, it is **automatically populated** without needing to inject `ActivatedRoute` and manually subscribe to parameters.
+
+### Example
+
+**URL**: `/products/123`
+
+**Route configuration**:
+```typescript
+{ path: 'products/:id', component: ProductDetailComponent }
+```
+
+**Component**:
+```typescript
+@Input() id!: string; // Automatically populated with "123"
+```
+
+### Benefits
+- Cleaner and more declarative code
+- Less boilerplate
+- Natural integration with signals and reactivity

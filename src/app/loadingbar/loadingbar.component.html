@@ -1,0 +1,2 @@
+<p *ngIf="globalState.isLoading()">Loading {{loadingBar$ | async}}</p>
+<p *ngIf="isLoadingOld$ | async">OldLoading {{loadingBar$ | async}}</p>
