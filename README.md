@@ -24,6 +24,7 @@ This repository is organized into separate branches, where each branch represent
 | `ng14` | 14.2.0
 | `ng15` | 15.2.0
 | `ng16` | 16.2.0
+| `ng17` | 17.3.0
 ## 🚀 Getting Started
 
 ### Prerequisites
