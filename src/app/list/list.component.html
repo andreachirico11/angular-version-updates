@@ -1,0 +1,27 @@
+<div class="list-container">
+  <app-list-header [title]="listTitle" [oldCounter]="oldCounter"
+    [newCounter]="newCounter"
+    (addClick)="addItem()"
+    (deleteAll)="deleteAllItems()"
+    (customDescriptionChange)="onCustomDescriptionChange($event)">
+  </app-list-header>
+  @defer (on timer(1s)) {
+  <div class="loaded-content">
+    <div class="list-items">
+      @for (item of items(); track item.id) {
+      <app-list-item [item]="item" (itemClick)="onItemClick($event)"
+        (deleteClick)="deleteItem($event)">
+      </app-list-item>
+      } @empty {
+      <p>Nessun elemento nella lista</p>
+      }
+    </div>
+  </div>
+  } @placeholder {
+  <div class="placeholder">
+    <ng-content>
+      ⏳ Caricamento in corso...
+    </ng-content>
+  </div>
+  }
+</div>

@@ -1,27 +1,173 @@
-# AngularVersionUpdates
+# Angular Version 18
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
+## 🔗 Wiz Integration
 
-## Development server
+**Wiz** is an internal Google framework used to create performance-critical applications, such as:
+- Google Search
+- Google Photos  
+- Google Payments
+- YouTube
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Key Features
 
-## Code scaffolding
+Traffic on these sites is enormous, and many users don't have access to fast internet. Wiz focuses on:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+✅ **Optimized performance** with relatively low interactivity  
+✅ **SSR (Server-Side Rendering)** as fundamental - all components are rendered with an optimized streaming solution  
+✅ **Intelligent lazy loading** - JavaScript required for page interaction is only loaded when the component is visible to the user
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🎯 Signals API
 
-## Running unit tests
+### input() Signal
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Optimized version of `@Input()` that transforms inputs into signals.
 
-## Running end-to-end tests
+#### Syntax
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```typescript
+@Component({...})
+export class MyComponent {
+  // Default: undefined
+  optionalInput = input<number>();
 
-## Further help
+  // Default: 5
+  optionalInputWithDefaultValue = input<number>(5);
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+  // Parent MUST pass a value
+  requiredInput = input.required<number>();
+
+  // ⚠️ ERROR - setting a default value for required input is not allowed
+  // requiredInputWithDefaultValue = input.required<number>(5);  
+}
+```
+
+#### Features
+
+- ✨ Same syntax as signals during usage
+- 🔒 **Readonly** - not modifiable like classic signals
+- 🔄 Compatible with `computed()`, `effect()`, etc.
+- 📝 See example in `item.component.ts`
+
+#### Benefits
+
+This new approach reduces the use of `ngOnChanges`.
+
+**Example**: `oldCounter` vs `newCounter` in `header.component`
+
+In the **parent** component nothing changes, but in the **child** component using `input()` you can treat the input as a signal, enabling the use of `effect()`:
+
+```typescript
+newCounter = input("", {
+  transform: (val: number) => "New Counter: " + val
+});
+```
+
+The optional second argument allows you to **transform** the input value (similar to a setter).
+
+---
+
+### model() Signal
+
+It's a superstructure of `input()` with the same syntax.
+
+#### When to Use It
+
+Ideal for signals that need to support:
+- ✅ **Two-way binding**
+- ✅ **Output emission**
+
+#### Example
+
+See `list-header.component.ts`:
+
+```typescript
+customDescription = model<string>("");
+```
+
+The component **automatically** generates an event that takes the model name + `"Change"`.
+
+**Benefits**: Avoids the use of explicit `EventEmitter`.
+
+---
+
+### Signal Queries
+
+The new functions transform classic queries into signals:
+
+- `viewChild()`
+- `viewChildren()`
+- `contentChild()`
+- `contentChildren()`
+
+#### Features
+
+✨ Always readable, even in `ngOnInit()`  
+📝 See example in `list.component.ts`
+
+```typescript
+listItems = viewChildren(ListItemComponent);
+```
+
+---
+
+### output()
+
+**Type-safe** version of `@Output()`.
+
+> ⚠️ **Important**: It's not a signal, but a way to standardize syntax.
+
+#### RxJS Integration
+
+RxJS has created two utilities:
+- `outputFromObservable()` - transforms an Observable into an output
+- `outputToObservable()` - transforms an output into an Observable
+
+#### Examples
+
+See `list.component.ts` and `list-header.component.ts`:
+
+```typescript
+// Simple output
+addClick = output<void>();
+
+// Output from Observable
+private deleteAll$ = new Subject<void>();
+deleteAll = outputFromObservable(this.deleteAll$);
+```
+
+---
+
+## 🆕 Other New Features
+
+### ng-content Fallback
+
+Now `<ng-content>` can contain **default content** used only when content projection is missing.
+
+#### Example
+
+See `list.component.html`:
+
+```html
+<div class="placeholder">
+  <ng-content>
+    ⏳ Loading...
+  </ng-content>
+</div>
+```
+
+If the parent doesn't project content, "⏳ Loading..." is displayed.
+
+---
+
+### New Reactive Forms Events
+
+Angular has introduced new events for Reactive Forms:
+
+| Event | Description |
+|-------|-------------|
+| `PristineChangeEvent` | When the pristine status changes (initial state) |
+| `TouchedChangeEvent` | When the input is "touched" |
+
+These events allow more granular control over form state.
