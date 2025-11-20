@@ -1,0 +1,9 @@
+<div class="list-item" [class.active]="item().active" (click)="onItemClick()">
+  <div class="item-content">
+    <h3>{{ item().title }}</h3>
+    <p>{{ itemDescription() }}</p>
+  </div>
+  <button #btn class="delete-button" (click)="onDeleteClick()">
+    ×
+  </button>
+</div>

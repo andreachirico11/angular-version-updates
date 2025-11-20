@@ -1,0 +1,20 @@
+<div class="list-header">
+  <div class="header-content">
+    <h2>{{ title() }}</h2>
+    <span class="item-count">Old Counter: {{ oldCounter }} {{ newCounter()}}</span>
+  </div>
+  <button class="add-button" (click)="onAddClick()">
+    + Aggiungi
+  </button>
+  <button class="add-button delete" (click)="onDelete()">
+    Cancella tutto
+  </button>
+</div>
+
+<div class="search-container">
+  <input type="text" class="search-input" [(ngModel)]="customDescription"
+    placeholder="custom description" />
+  <button class="clear-button" (click)="customDescription.set('')">
+    ✕
+  </button>
+</div>
