@@ -1,0 +1,102 @@
+.navbar {
+  padding: 15px 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  font-size: 24px;
+  color: #4CAF50;
+  cursor: pointer;
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: transparent;
+  color: #666;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+
+  &:hover {
+    background-color: #e8e8e8;
+    color: #333;
+  }
+
+  &.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+}
+
+.nav-icon {
+  font-size: 18px;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.nav-button {
+  padding: 10px 16px;
+  background-color: #fff;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, border-color 0.3s;
+
+  &:hover {
+    background-color: #e8e8e8;
+    border-color: #999;
+  }
+
+  &.primary {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+
+    &:hover {
+      background-color: #45a049;
+      border-color: #45a049;
+    }
+  }
+}

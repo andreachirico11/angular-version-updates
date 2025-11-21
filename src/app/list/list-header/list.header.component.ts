@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, input, OnChanges, SimpleChanges, effect, model, output } from '@angular/core';
+import { Component, effect, Input, input, model, OnChanges, output, SimpleChanges } from '@angular/core';
 import { outputFromObservable } from '@angular/core/rxjs-interop';
-import { FormsModule, NgModel } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-list-header',

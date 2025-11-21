@@ -1,0 +1,18 @@
+<div class="contact-card">
+  <div class="contact-avatar">
+    <span class="avatar-icon">{{ contact().avatarIcon }}</span>
+  </div>
+  <div class="contact-info">
+    <h4 class="contact-name">{{ contact().name + ' ' + contact().surname }}</h4>
+    <span class="contact-email">{{ contact().email }}</span>
+    <span class="contact-phone">{{ contact().phone }}</span>
+  </div>
+  <div class="contact-actions">
+    <button class="contact-button primary" (click)="select()">
+      ✓ Seleziona
+    </button>
+    <button class="contact-button secondary">
+      ⋯ Altro
+    </button>
+  </div>
+</div>

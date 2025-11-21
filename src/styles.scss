@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+
+.action-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+
+  &.secondary {
+    background-color: #2196F3;
+  }
+}
+
+.action-button:hover {
+  background-color: #45a049;
+
+  &.secondary:hover {
+    background-color: #1976D2;
+  }
+}

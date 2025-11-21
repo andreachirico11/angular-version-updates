@@ -1,0 +1,86 @@
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.contact-card:hover {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-color: #4CAF50;
+}
+
+.contact-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar-icon {
+  font-size: 24px;
+}
+
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.contact-name {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+}
+
+.contact-email,
+.contact-phone {
+  font-size: 14px;
+  color: #666;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.contact-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+
+  &.primary {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  &.secondary {
+    background-color: #2196F3;
+    color: white;
+  }
+}
+
+.contact-button:hover {
+  &.primary {
+    background-color: #45a049;
+  }
+
+  &.secondary {
+    background-color: #1976D2;
+  }
+}

@@ -1,0 +1,139 @@
+.contact-detail {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+}
+
+.detail-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid #4CAF50;
+}
+
+.avatar-icon-large {
+  font-size: 40px;
+}
+
+.detail-title {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.detail-name {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+  font-weight: 600;
+}
+
+.detail-id {
+  font-size: 14px;
+  color: #666;
+  padding: 3px 8px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  width: fit-content;
+}
+
+.detail-content {
+  margin-bottom: 20px;
+}
+
+.detail-section {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.section-title {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.info-row {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.info-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.info-value {
+  font-size: 14px;
+  color: #333;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.detail-button {
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, border-color 0.3s;
+
+  &:hover {
+    background-color: #e8e8e8;
+    border-color: #999;
+  }
+
+  &.primary {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+
+    &:hover {
+      background-color: #45a049;
+      border-color: #45a049;
+    }
+  }
+
+  &.secondary {
+    background-color: #f44336;
+    color: white;
+    border-color: #f44336;
+
+    &:hover {
+      background-color: #d32f2f;
+      border-color: #d32f2f;
+    }
+  }
+}

@@ -1,23 +1,40 @@
-import { Component, effect, signal, viewChildren, WritableSignal } from '@angular/core';
+import {
+  Component,
+  effect,
+  linkedSignal,
+  signal,
+  viewChildren,
+  WritableSignal,
+} from '@angular/core';
 import { ListHeaderComponent } from './list-header/list.header.component';
 import { ListItemComponent } from './list-item/list.item.component';
 import { ListItem, MOCK_DATA } from './list.item';
+import { ListFooterComponent } from './list-footer/list.footer.component';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  imports: [ListHeaderComponent, ListItemComponent],
+  imports: [ListHeaderComponent, ListItemComponent, ListFooterComponent],
   standalone: true,
   styleUrl: './list.component.scss',
 })
 export class ListComponent {
   listTitle: string = 'La mia Lista';
   items: WritableSignal<ListItem[]> = signal([...MOCK_DATA]);
+  selectedItemIds = linkedSignal<ListItem[], number[]>({
+    source: this.items,
+    computation: (source, previous) => {
+      if (previous?.value) {
+        return source.filter(({active}) => active).map(({id}) => id);
+      }
+      return [];
+    },
+  });
   oldCounter!: number;
   newCounter!: number;
-  listItems =  viewChildren(ListItemComponent);
+  listItems = viewChildren(ListItemComponent);
 
-  private defaultDescription = 'Descrizione dell\'elemento';
+  private defaultDescription = "Descrizione dell'elemento";
   private customDescription = '';
 
   constructor() {
@@ -26,17 +43,20 @@ export class ListComponent {
       this.newCounter = this.oldCounter;
     });
     effect(() => {
-      console.log(this.listItems())
+      console.log(this.listItems());
     });
+    effect(() => {
+      console.log("SELECTED ITEM IS CHANGING TO " + this.selectedItemIds());
+    })
   }
 
-  onItemClick({ id }: ListItem): void {
+  onItemClick(i: ListItem): void {
     this.items.update((previousItems) =>
       previousItems.map((item) => ({
         ...item,
-        active: item.id !== id ? item.active : !item.active,
+        active: item.id !== i.id ? item.active : !item.active,
       }))
-    );
+    );;
   }
 
   deleteItem(id: number): void {

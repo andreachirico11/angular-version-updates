@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, input, computed, viewChild, ElementRef, OnInit, AfterContentInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input, computed, viewChild, ElementRef, OnInit, AfterContentInit, output } from '@angular/core';
 import { ListItem } from '../list.item';
 
 @Component({
@@ -11,8 +11,8 @@ export class ListItemComponent implements OnInit, AfterContentInit {
   item = input.required<ListItem>();
   itemDescription = computed(() => "-> " + this.item().description)
   btnRef = viewChild.required<ElementRef>("btn")
-  @Output() itemClick = new EventEmitter<ListItem>();
-  @Output() deleteClick = new EventEmitter<number>();
+  itemClick = output<ListItem>();
+  deleteClick = output<number>();
 
   ngOnInit(): void {
     console.log("ONINIT btn is " + this.btnRef().nativeElement);

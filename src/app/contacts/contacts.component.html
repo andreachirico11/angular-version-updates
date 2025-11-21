@@ -1,0 +1,21 @@
+<div class="contacts-container">
+  <div class="contacts-header">
+    <h3><button class="action-button secondary" (click)="reloadContacts()">
+        ⟳
+      </button> Contatti</h3>
+    <span class="contacts-count">3 contatti</span>
+  </div>
+  @if (contactsLoading() || contactDetailLoading()) {
+  <app-spinner />
+  } @else if (!!contactDetail()) {
+  <app-contact-detail [contact]="contactDetail()"
+    (goBack)="goBackFromDetail()" />
+  } @else {
+  <div class="contacts-list">
+    @for (contact of contacts(); track contact.id) {
+    <app-contact [contact]="contact"
+      (contactSelected)="onContactSelected($event)" />
+    }
+  </div>
+  }
+</div>

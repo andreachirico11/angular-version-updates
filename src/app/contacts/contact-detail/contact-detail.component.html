@@ -1,0 +1,38 @@
+@let contactDetail = contactDetail$ | async;
+<div class="contact-detail">
+  <div class="detail-header">
+    <div class="detail-avatar">
+      <span class="avatar-icon-large">{{ contactDetail?.avatarIcon || '👤' }}</span>
+    </div>
+    <div class="detail-title">
+      <h2 class="detail-name">{{ contactDetail?.name }} {{ contactDetail?.surname }}</h2>
+      <span class="detail-id">ID: {{ contactDetail?.id }}</span>
+    </div>
+  </div>
+
+  <div class="detail-content">
+    <div class="detail-section">
+      <h3 class="section-title">Informazioni di contatto</h3>
+      <div class="info-row">
+        <span class="info-label">Email:</span>
+        <span class="info-value">{{ contactDetail?.email }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Telefono:</span>
+        <span class="info-value">{{ contactDetail?.phone }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-actions">
+    <button class="detail-button primary">
+      ✓ Modifica
+    </button>
+    <button class="detail-button secondary">
+      ✕ Elimina
+    </button>
+    <button class="detail-button" (click)="goBack.emit()">
+      ← Indietro
+    </button>
+  </div>
+</div>

@@ -1,7 +1,6 @@
 <div class="list-container">
   <app-list-header [title]="listTitle" [oldCounter]="oldCounter"
-    [newCounter]="newCounter"
-    (addClick)="addItem()"
+    [newCounter]="newCounter" (addClick)="addItem()"
     (deleteAll)="deleteAllItems()"
     (customDescriptionChange)="onCustomDescriptionChange($event)">
   </app-list-header>
@@ -25,3 +24,4 @@
   </div>
   }
 </div>
+<app-list-footer [selectedItemIds]="selectedItemIds()"/>

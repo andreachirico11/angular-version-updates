@@ -1,173 +1,231 @@
-# Angular Version 18
+# Angular Version 19
 
-## 🔗 Wiz Integration
 
-**Wiz** is an internal Google framework used to create performance-critical applications, such as:
-- Google Search
-- Google Photos  
-- Google Payments
-- YouTube
+## 🆕 New Features
 
-### Key Features
+### linkedSignal (Experimental)
 
-Traffic on these sites is enormous, and many users don't have access to fast internet. Wiz focuses on:
+The new reactive primitive `linkedSignal` is a signal that automatically activates when another source signal is modified. It allows you to read the source signal's value to compute new values, with access to the previous value as well.
 
-✅ **Optimized performance** with relatively low interactivity  
-✅ **SSR (Server-Side Rendering)** as fundamental - all components are rendered with an optimized streaming solution  
-✅ **Intelligent lazy loading** - JavaScript required for page interaction is only loaded when the component is visible to the user
+**Key Features:**
+- Automatic synchronization with the source signal
+- Access to previous value for comparisons
+- Standard signal methods for manual modifications
 
----
-
-## 🎯 Signals API
-
-### input() Signal
-
-Optimized version of `@Input()` that transforms inputs into signals.
-
-#### Syntax
+**Example - Managing Item Selection:**
 
 ```typescript
-@Component({...})
-export class MyComponent {
-  // Default: undefined
-  optionalInput = input<number>();
-
-  // Default: 5
-  optionalInputWithDefaultValue = input<number>(5);
-
-  // Parent MUST pass a value
-  requiredInput = input.required<number>();
-
-  // ⚠️ ERROR - setting a default value for required input is not allowed
-  // requiredInputWithDefaultValue = input.required<number>(5);  
-}
-```
-
-#### Features
-
-- ✨ Same syntax as signals during usage
-- 🔒 **Readonly** - not modifiable like classic signals
-- 🔄 Compatible with `computed()`, `effect()`, etc.
-- 📝 See example in `item.component.ts`
-
-#### Benefits
-
-This new approach reduces the use of `ngOnChanges`.
-
-**Example**: `oldCounter` vs `newCounter` in `header.component`
-
-In the **parent** component nothing changes, but in the **child** component using `input()` you can treat the input as a signal, enabling the use of `effect()`:
-
-```typescript
-newCounter = input("", {
-  transform: (val: number) => "New Counter: " + val
+// list.component.ts
+selectedItemIds = linkedSignal<ListItem[], number[]>({
+  source: this.items,
+  computation: (source, previous) => {
+    if (previous?.value) {
+      return source.filter(({active}) => active).map(({id}) => id);
+    }
+    return [];
+  },
 });
 ```
 
-The optional second argument allows you to **transform** the input value (similar to a setter).
+Every time the `items` array changes, the `selectedItemIds` array is automatically recalculated.
 
----
-
-### model() Signal
-
-It's a superstructure of `input()` with the same syntax.
-
-#### When to Use It
-
-Ideal for signals that need to support:
-- ✅ **Two-way binding**
-- ✅ **Output emission**
-
-#### Example
-
-See `list-header.component.ts`:
+**Example - Managing Loading State:**
 
 ```typescript
-customDescription = model<string>("");
+// footer.component.ts
+loading = linkedSignal<number[], boolean>({
+  source: this.selectedItemIds,
+  computation: () => {
+    setTimeout(() => {
+      this.loading.set(false);
+    }, 1000);
+    return true;
+  },
+});
 ```
 
-The component **automatically** generates an event that takes the model name + `"Change"`.
-
-**Benefits**: Avoids the use of explicit `EventEmitter`.
+When `selectedItemIds` changes, `loading` is set to `true` and automatically reset to `false` after one second.
 
 ---
 
-### Signal Queries
+### resource & rxResource (Experimental)
 
-The new functions transform classic queries into signals:
+New APIs created specifically to handle asynchronous operations in a declarative way.
 
-- `viewChild()`
-- `viewChildren()`
-- `contentChild()`
-- `contentChildren()`
+#### resource
 
-#### Features
-
-✨ Always readable, even in `ngOnInit()`  
-📝 See example in `list.component.ts`
+API for Promise-based asynchronous operations.
 
 ```typescript
-listItems = viewChildren(ListItemComponent);
+// contacts.component.ts
+private contactResource = resource({
+  request: () => this.filters(), // optional - signal that triggers reload
+  loader: async (params) => {
+    const response = await fetch(`https://api.mock.com/contacts`);
+    if (!response.ok) {
+      return [];
+    }
+    return await response.json();
+  },
+  defaultValue: [],
+});
 ```
 
----
+**Properties:**
+- `request` (optional): signal that triggers resource reloading
+- `loader`: callback containing the asynchronous logic
+- `defaultValue`: fallback value in case of error
 
-### output()
+#### rxResource
 
-**Type-safe** version of `@Output()`.
-
-> ⚠️ **Important**: It's not a signal, but a way to standardize syntax.
-
-#### RxJS Integration
-
-RxJS has created two utilities:
-- `outputFromObservable()` - transforms an Observable into an output
-- `outputToObservable()` - transforms an output into an Observable
-
-#### Examples
-
-See `list.component.ts` and `list-header.component.ts`:
+Version of the resource API integrated with RxJS Observables.
 
 ```typescript
-// Simple output
-addClick = output<void>();
-
-// Output from Observable
-private deleteAll$ = new Subject<void>();
-deleteAll = outputFromObservable(this.deleteAll$);
+// contact-detail.component.ts
+private contactDetailResource = rxResource({
+  request: this.contactSelectedId,
+  defaultValue: null,
+  loader: ({ request: contactSelectedId }) => {
+    if (!!contactSelectedId) {
+      return this.contactService.getContactDetail(contactSelectedId);
+    }
+    return of(null);
+  },
+});
 ```
 
 ---
 
-## 🆕 Other New Features
+### Equality Function in rxjs-interop
 
-### ng-content Fallback
+New ability to define custom equality functions for `toSignal()`, allowing more granular control over updates.
 
-Now `<ng-content>` can contain **default content** used only when content projection is missing.
+```typescript
+// table.component
+protected vehicles = toSignal(this.tableService.getVehicles(), {
+  equal: (oldVs, newVs) => {
+    if (!newVs || !oldVs) {
+      return false;
+    }
+    return newVs.every((v) => {
+      const oldV = oldVs.find(({ id }) => v.id === id);
+      return !!oldV && oldV.plate === v.plate;
+    });
+  },
+});
+```
 
-#### Example
+This allows you to avoid unnecessary updates based on custom logic instead of simple reference equality.
 
-See `list.component.html`:
+---
+
+### afterRenderEffect Function
+
+Unlike `afterRender` which executes after every render, `afterRenderEffect` is specific to the contained signals and only executes when they change.
+
+```typescript
+// navbar.component.ts
+constructor() {
+  afterRenderEffect(() => {
+    // Executed only when tracked signals change
+    console.log('Signal changed:', this.mySignal());
+  });
+}
+```
+
+---
+
+### Template Variable Syntax: @let
+
+New syntax for defining variables directly in the template, reusable within the same template.
+
+**Features:**
+- Read-only variables
+- Scope limited to current template and its descendants
+- Cannot be reassigned
+- Not accessible from parent or sibling components
+
+```typescript
+// contact-detail.component.ts
+@Component({
+  template: `
+    @let userName = user().name;
+    @let userEmail = user().email;
+    
+    <div class="user-card">
+      <h2>{{ userName }}</h2>
+      <p>{{ userEmail }}</p>
+    </div>
+  `
+})
+```
+
+---
+
+### routerOutletData Input
+
+New input for `RouterOutlet` that allows passing data to all child components after navigation.
 
 ```html
-<div class="placeholder">
-  <ng-content>
-    ⏳ Loading...
-  </ng-content>
-</div>
+<!-- app.component.html -->
+<router-outlet [routerOutletData]="counterData()"/>
 ```
 
-If the parent doesn't project content, "⏳ Loading..." is displayed.
+Child components can access the data through the `ROUTER_OUTLET_DATA` injection token, which returns a signal to react to changes.
+
+```typescript
+// table.component.ts
+constructor() {
+  const outletData = inject(ROUTER_OUTLET_DATA);
+  
+  effect(() => {
+    console.log('Counter value:', outletData().counter);
+  });
+}
+```
 
 ---
 
-### New Reactive Forms Events
+## 🔧 Configuration Improvements
 
-Angular has introduced new events for Reactive Forms:
+### New Initializer Helpers
 
-| Event | Description |
-|-------|-------------|
-| `PristineChangeEvent` | When the pristine status changes (initial state) |
-| `TouchedChangeEvent` | When the input is "touched" |
+Angular 19 introduces new helper functions that simplify initializer configuration:
 
-These events allow more granular control over form state.
+- `provideAppInitializer()`
+- `provideEnvironmentInitializer()`
+- `providePlatformInitializer()`
+
+These functions offer a cleaner and more readable alternative to the traditional `APP_INITIALIZER`, `ENVIRONMENT_INITIALIZER`, and `PLATFORM_INITIALIZER` tokens.
+
+```typescript
+// app.config.ts
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAppInitializer(() => {
+      console.log('App initialized');
+    }),
+    provideEnvironmentInitializer(() => {
+      console.log('Environment initialized');
+    }),
+    // ... other providers
+  ]
+};
+```
+
+---
+
+## 📋 Breaking Changes
+
+### Standalone Components by Default
+
+Starting with Angular 19, **all components are standalone by default**. It's no longer necessary to specify `standalone: true` in the component configuration.
+
+```typescript
+@Component({
+  selector: 'app-example',
+  template: `<p>I'm standalone by default!</p>`
+})
+export class ExampleComponent {}
+```
+

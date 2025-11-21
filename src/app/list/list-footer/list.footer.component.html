@@ -1,0 +1,27 @@
+<div class="list-footer">
+  <div class="footer-content">
+    <div class="footer-stats">
+      <span class="stat-item">Totale: 1</span>
+      <span class="stat-item">Completati: 2</span>
+      <span class="stat-item">Da fare: 3</span>
+    </div>
+  </div>
+  <div class="footer-actions">
+    <button class="action-button">
+      ↓ Esporta
+    </button>
+    <button class="action-button secondary">
+      ⟳ Aggiorna
+    </button>
+    @if (loading()) {
+      <app-spinner/>
+    }
+  </div>
+</div>
+
+<div class="footer-note">
+  <input type="text" class="note-input" placeholder="Aggiungi una nota..." />
+  <button class="clear-button">
+    ✕
+  </button>
+</div>
