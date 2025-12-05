@@ -1,0 +1,81 @@
+<div class="media-container">
+  <header class="header">
+    <h1>📚 My Media Library</h1>
+    <p class="subtitle">A collection of books, movies, music, and podcasts</p>
+  </header>
+
+  <div class="filter-bar">
+    <button *ngFor="let filter of filters"
+      [class.active]="selectedFilter() === filter"
+      (click)="selectedFilter.set(filter)" class="filter-btn">
+      {{ filter === 'all' ? 'All Items' : filter }}
+    </button>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-number">{{ getFilteredItems().length }}</span>
+      <span class="stat-label">Items</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">{{ getAverageRating() }}</span>
+      <span class="stat-label">Avg Rating</span>
+    </div>
+  </div>
+
+  <div class="media-grid">
+    @for (item of getFilteredItems(); track item.id) {
+    @let isABook = 'isbn' in item && 'pages' in item && 'author' in item;
+    @let isAMovie = 'director' in item && 'duration' in item &&
+    'releaseYear' in item;
+    @let isMusic = 'artist' in item && 'album' in item && 'tracks' in item;
+    @let isPodcast = 'host' in item && 'episodes' in item && 'frequency' in
+    item;
+
+    <div class="media-card" [attr.data-type]="item.type">
+      <div class="card-header">
+        <span class="type-badge">{{ getTypeIcon(item.type) }} {{ item.type
+          }}</span>
+        <span class="rating">⭐ {{ item.rating }}/5</span>
+      </div>
+
+      <h2 class="item-title">{{ item.title }}</h2>
+
+      <div class="item-details">
+
+        @if (isABook) {
+        <p><strong>Author:</strong> {{ item.author }}</p>
+        <p><strong>Pages:</strong> {{ item.pages }}</p>
+        <p><strong>ISBN:</strong> {{ item.isbn }}</p>
+        }
+        @if (isAMovie) {
+        <p><strong>Author:</strong> {{ item.director }}</p>
+        <p><strong>Pages:</strong> {{ item.duration }}</p>
+        <p><strong>ISBN:</strong> {{ item.releaseYear }}</p>
+        }
+        @if (isMusic) {
+        <p><strong>Artist:</strong> {{ item.artist }}</p>
+        <p><strong>Album:</strong> {{ item.album }}</p>
+        <p><strong>Tracks:</strong> {{ item.tracks }}</p>
+        }
+        @if (isPodcast) {
+        <p><strong>Host:</strong> {{ item.host }}</p>
+        <p><strong>Episodes:</strong> {{ item.episodes }}</p>
+        <p><strong>Frequency:</strong> {{ item.frequency }}</p>
+        }
+      </div>
+
+
+      <div class="card-footer">
+        <small>Added: {{ item.createdAt | date:'short' }}</small>
+      </div>
+    </div>
+    }
+  </div>
+
+  @if (getFilteredItems().length === 0) {
+  <div class="empty-state">
+    <p>No items found for this filter</p>
+  </div>
+  }
+</div>
