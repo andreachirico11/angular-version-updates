@@ -30,7 +30,7 @@ This repository contains a showcase application with a dropdown menu that allows
 | `ng17` | 17.3.0                                                                        |
 | `ng18` | 18.2.0                                                                        |
 | `ng19` | 19.2.0                                                                        |
-
+| `ng20` | 20.3.0                                                                        |
 
 ## 🚀 Getting Started
 
