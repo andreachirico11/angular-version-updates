@@ -1,1 +1,132 @@
-/* You can add global styles to this file, and also import other style files */
+.signup-container {
+  // max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 500;
+}
+
+input[type='text'],
+input[type='email'] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+input[type='text']:focus,
+input[type='email']:focus {
+  outline: none;
+  border-color: #4caf50;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+input[type='checkbox'] {
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.error {
+  display: block;
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button[type='submit'] {
+  background-color: #4caf50;
+  color: white;
+}
+
+button[type='submit']:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+button[type='submit']:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+button[type='button'] {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+button[type='button']:hover {
+  background-color: #e0e0e0;
+}
+
+pre {
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+
+
+reaction-picker-template {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.disabled-state {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  border: 1px solid #e5dfcc;
+  border-radius: 10px;
+  .reaction {
+    display: block;
+    padding: 10px 13px;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(#e5dfcc, 0.1);
+    }
+  }
+  .required-marker {
+    position: absolute;
+    top: -10px;
+    right: -5px;
+  }
+}
