@@ -10,5 +10,5 @@ const FILE_NAMES = [
   'ng18',
   'ng19',
   'ng20',
-];
+  'ng21'];
 const MARKDOWN_FOLDER = '/markdowns/';
